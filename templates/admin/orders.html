@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}View Orders - Admin{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">All Orders</h1>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>#{{ order.id }}</td>
+                <td>{{ order.user.username }}</td>
+                <td>
+                    <ul class="list-unstyled mb-0">
+                        {% for item in order.order_items %}
+                        <li><small>{{ item.menu_item.name }} x{{ item.quantity }}</small></li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>${{ "%.2f"|format(order.total_amount) }}</td>
+                <td><span class="badge bg-warning">{{ order.status }}</span></td>
+                <td><small>{{ order.delivery_address }}</small></td>
+                <td>{{ order.phone }}</td>
+                <td><small>{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</small></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

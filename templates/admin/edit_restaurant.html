@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Restaurant - Admin{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Edit Restaurant</h1>
+
+<div class="card">
+    <div class="card-body">
+        <form method="POST">
+            <div class="mb-3">
+                <label for="name" class="form-label">Restaurant Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ restaurant.name }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="cuisine" class="form-label">Cuisine Type</label>
+                <input type="text" class="form-control" id="cuisine" name="cuisine" value="{{ restaurant.cuisine }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="3">{{ restaurant.description }}</textarea>
+            </div>
+            <div class="mb-3">
+                <label for="image_url" class="form-label">Image URL</label>
+                <input type="url" class="form-control" id="image_url" name="image_url" value="{{ restaurant.image_url }}">
+            </div>
+            <div class="mb-3">
+                <label for="rating" class="form-label">Rating</label>
+                <input type="number" step="0.1" min="0" max="5" class="form-control" id="rating" name="rating" value="{{ restaurant.rating }}">
+            </div>
+            <button type="submit" class="btn btn-primary">Update Restaurant</button>
+            <a href="{{ url_for('admin.restaurants') }}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

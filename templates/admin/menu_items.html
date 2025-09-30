@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Menu Items - Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Manage Menu Items</h1>
+    <a href="{{ url_for('admin.add_menu_item') }}" class="btn btn-primary">Add New Menu Item</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Restaurant</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Featured</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in menu_items %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.restaurant.name }}</td>
+                <td>{{ item.category }}</td>
+                <td>${{ "%.2f"|format(item.price) }}</td>
+                <td>{% if item.is_featured %}<span class="badge bg-success">Yes</span>{% endif %}</td>
+                <td>
+                    <a href="{{ url_for('admin.edit_menu_item', item_id=item.id) }}" class="btn btn-sm btn-warning">Edit</a>
+                    <form method="POST" action="{{ url_for('admin.delete_menu_item', item_id=item.id) }}" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Food Delivery{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Admin Dashboard</h1>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h3>{{ restaurant_count }}</h3>
+                <p class="mb-0">Total Restaurants</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h3>{{ menu_item_count }}</h3>
+                <p class="mb-0">Total Menu Items</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <h3>{{ order_count }}</h3>
+                <p class="mb-0">Total Orders</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4 mb-3">
+        <a href="{{ url_for('admin.restaurants') }}" class="btn btn-primary btn-lg w-100">
+            <i class="bi bi-shop"></i> Manage Restaurants
+        </a>
+    </div>
+    <div class="col-md-4 mb-3">
+        <a href="{{ url_for('admin.menu_items') }}" class="btn btn-success btn-lg w-100">
+            <i class="bi bi-card-list"></i> Manage Menu Items
+        </a>
+    </div>
+    <div class="col-md-4 mb-3">
+        <a href="{{ url_for('admin.orders') }}" class="btn btn-warning btn-lg w-100">
+            <i class="bi bi-receipt"></i> View Orders
+        </a>
+    </div>
+</div>
+{% endblock %}
