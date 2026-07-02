@@ -138,3 +138,28 @@ def delete_menu_item(item_id):
 def orders():
     orders = Order.query.order_by(Order.created_at.desc()).all()
     return render_template('admin/orders.html', orders=orders)
+
+
+@admin_bp.route('/orders/<int:order_id>/<status>')
+@admin_required
+def update_order_status(order_id, status):
+
+    order = Order.query.get_or_404(order_id)
+
+    valid_statuses = [
+        "Pending",
+        "Preparing",
+        "Out for Delivery",
+        "Delivered"
+    ]
+
+    if status not in valid_statuses:
+        flash("Invalid order status!", "danger")
+        return redirect(url_for('admin.orders'))
+
+    order.status = status
+    db.session.commit()
+
+    flash(f"Order #{order.id} status updated to '{status}'.", "success")
+
+    return redirect(url_for('admin.orders'))

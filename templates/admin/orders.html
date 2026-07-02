@@ -6,8 +6,8 @@
 <h1 class="mb-4">All Orders</h1>
 
 <div class="table-responsive">
-    <table class="table table-striped">
-        <thead>
+    <table class="table table-striped table-bordered align-middle">
+        <thead class="table-dark">
             <tr>
                 <th>Order ID</th>
                 <th>Customer</th>
@@ -17,28 +17,87 @@
                 <th>Address</th>
                 <th>Phone</th>
                 <th>Date</th>
+                <th>Action</th>
             </tr>
         </thead>
+
         <tbody>
             {% for order in orders %}
             <tr>
+
                 <td>#{{ order.id }}</td>
+
                 <td>{{ order.user.username }}</td>
+
                 <td>
                     <ul class="list-unstyled mb-0">
                         {% for item in order.order_items %}
-                        <li><small>{{ item.menu_item.name }} x{{ item.quantity }}</small></li>
+                        <li>{{ item.menu_item.name }} x{{ item.quantity }}</li>
                         {% endfor %}
                     </ul>
                 </td>
+
                 <td>${{ "%.2f"|format(order.total_amount) }}</td>
-                <td><span class="badge bg-warning">{{ order.status }}</span></td>
-                <td><small>{{ order.delivery_address }}</small></td>
+
+                <td>
+                    {% if order.status == "Pending" %}
+                        <span class="badge bg-warning text-dark">Pending</span>
+
+                    {% elif order.status == "Preparing" %}
+                        <span class="badge bg-primary">Preparing</span>
+
+                    {% elif order.status == "Out for Delivery" %}
+                        <span class="badge bg-info text-dark">Out for Delivery</span>
+
+                    {% elif order.status == "Delivered" %}
+                        <span class="badge bg-success">Delivered</span>
+
+                    {% else %}
+                        <span class="badge bg-secondary">{{ order.status }}</span>
+                    {% endif %}
+                </td>
+
+                <td>{{ order.delivery_address }}</td>
+
                 <td>{{ order.phone }}</td>
-                <td><small>{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</small></td>
+
+                <td>{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+
+                <td>
+
+                    {% if order.status == "Pending" %}
+
+                    <a href="{{ url_for('admin.update_order_status', order_id=order.id, status='Preparing') }}"
+                       class="btn btn-success btn-sm">
+                        Accept Order
+                    </a>
+
+                    {% elif order.status == "Preparing" %}
+
+                    <a href="{{ url_for('admin.update_order_status', order_id=order.id, status='Out for Delivery') }}"
+                       class="btn btn-primary btn-sm">
+                        Out for Delivery
+                    </a>
+
+                    {% elif order.status == "Out for Delivery" %}
+
+                    <a href="{{ url_for('admin.update_order_status', order_id=order.id, status='Delivered') }}"
+                       class="btn btn-dark btn-sm">
+                        Delivered
+                    </a>
+
+                    {% elif order.status == "Delivered" %}
+
+                    <span class="text-success fw-bold">Completed</span>
+
+                    {% endif %}
+
+                </td>
+
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+
 {% endblock %}
